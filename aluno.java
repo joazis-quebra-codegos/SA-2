@@ -5,99 +5,107 @@ import javax.swing.JOptionPane;
 
 public class aluno {
     protected String nome;
-    protected double[] notas = new double[6];
-    protected String competencia;
-    protected aluno[] alunos = new aluno[5];
-    
-    public aluno(String nome, double notas, String competencia) {
+    protected double[][] notas;
+    protected String[] MATERIAS = {"Matemática","Português","História","Geografia","Inglês","Ciências"};
+    protected ArrayList<aluno> alunos = new ArrayList<>();
+
+    public aluno(String nome, String[] materias) {
         this.nome = nome;
-        this.notas = new double[6]; 
-        this.competencia = competencia;
+        this.notas = new double[6][5];
+    }
+    public String getNome() {
+        return nome;
+    }
+    public double[][] getNotas() {
+        return notas;
+    }
+    @Override
+    public String toString() {
+        return nome;
     }
 
-    int i = 0;
-    public void cadastro(){
-        aluno a = new aluno("João", 0.0, "");
-        alunos[i] = a;
-        i++;
-    }
-
-    public void adicionarNota(Scanner scan) {
-        String nome = (String) JOptionPane.showInputDialog(null, "Selecione um aluno", "Escolha", 0, null, alunos, alunos[0].nome);
-
-        String[] materias = {"Matematica", "Português", "História", "Geografia", "Inglês", "Ciências"};
-        String op = (String) JOptionPane.showInputDialog(
-            null, 
-            "Escolha a matéria", 
-            "Menu", 
-            JOptionPane.PLAIN_MESSAGE, 
-            null, 
-            materias, 
-            materias[0]
-        );
-
-        switch (op) {
-            case "Matematica":
-                for (int i = 0; i < notas.length; i++) {
-                    String input = JOptionPane.showInputDialog("Nota " + (i + 1) + ": ");
-                    double nota = Double.parseDouble(input);
-                    notas[i] = nota;
-                }
-                break;
-
-            case "Português":
-                for (int i = 0; i < notas.length; i++) {
-                    String input = JOptionPane.showInputDialog("Nota " + (i + 1) + ": ");
-                    double nota = Double.parseDouble(input);
-                    notas[i] = nota;
-                }
-                break;
-
-            case "História":
-                for (int i = 0; i < notas.length; i++) {
-                    String input = JOptionPane.showInputDialog("Nota " + (i + 1) + ": ");
-                    double nota = Double.parseDouble(input);
-                    notas[i] = nota;
-                }
-                break;
-
-            case "Geografia":
-                for (int i = 0; i < notas.length; i++) {
-                    String input = JOptionPane.showInputDialog("Nota " + (i + 1) + ": ");
-                    double nota = Double.parseDouble(input);
-                    notas[i] = nota;
-                }
-                break;
-
-            case "Inglês":
-                for (int i = 0; i < notas.length; i++) {
-                    String input = JOptionPane.showInputDialog("Nota " + (i + 1) + ": ");
-                    double nota = Double.parseDouble(input);
-                    notas[i] = nota;
-                }
-                break;
-
-            case "Ciências":
-                for (int i = 0; i < notas.length; i++) {
-                    String input = JOptionPane.showInputDialog("Nota " + (i + 1) + ": ");
-                    double nota = Double.parseDouble(input);
-                    notas[i] = nota;
-                }
-                break;
-
-            default:
-                JOptionPane.showMessageDialog(null, "Opção Inválida");
-                break;
+    public void cadastrar() {
+        String nome = JOptionPane.showInputDialog("Nome do aluno:");
+        if (nome != null && !nome.trim().isEmpty()) {
+            aluno novo = new aluno(nome, MATERIAS);
+            alunos.add(novo);
+            JOptionPane.showMessageDialog(null, "Aluno cadastrado: " + nome);
         }
     }
 
-    public void mostrarNotas(){
-        for ()
-        
-        JOptionPane.showInputDialog();
+    public void adicionarNotas() {
+        if (alunos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
+        aluno selecionado = (aluno) JOptionPane.showInputDialog(
+            null, "Selecione um aluno", "Escolha",
+            JOptionPane.PLAIN_MESSAGE, null,
+            alunos.toArray(), alunos.get(0)
+        );
+        if (selecionado == null) return;
+
+        String materia = (String) JOptionPane.showInputDialog(
+            null, "Selecione a disciplina", "Disciplina",
+            JOptionPane.PLAIN_MESSAGE, null, MATERIAS, MATERIAS[0]
+        );
+        if (materia == null) return;
+
+        int mat = -1;
+        for (int i = 0; i < MATERIAS.length; i++) {
+            if (MATERIAS[i].equals(materia)) {
+                mat = i;
+                break;
+            }
+        }
+        if (mat < 0) return;
+
+        double[] notasMat = selecionado.getNotas()[mat];
+        for (int j = 0; j < notasMat.length; j++) {
+            String nota = JOptionPane.showInputDialog(
+            materia + " - Nota " + (j + 1) + " de 5:");
+            if (nota == null) {break;}
+            if (Double.parseDouble(nota) > 10 || Double.parseDouble(nota) < 0){
+                j--;
+                continue;
+            }
+            notasMat[j] = Double.parseDouble(nota);
+        }
     }
 
-        public String getNome() {
-        return nome;
+    public void mostrarNotas() {
+        if (alunos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
+        aluno selecionado = (aluno) JOptionPane.showInputDialog(
+            null, "Selecione um aluno", "Notas",
+            JOptionPane.PLAIN_MESSAGE, null,
+            alunos.toArray(), alunos.get(0)
+        );
+        if (selecionado == null) return;
+
+        String mensagem = "Notas de " + selecionado.getNome() + ":\n";
+        double somaTotal = 0;
+        int contTotal = 0;
+
+        for (int i = 0; i < MATERIAS.length; i++) {
+            mensagem += MATERIAS[i] + ":\n";
+            double soma = 0;
+            double[] notas = selecionado.getNotas()[i];
+            for (int j = 0; j < notas.length; j++) {
+                mensagem += "  Nota " + (j+1) + ": " + notas[j] + "\n";
+                soma += notas[j];
+            }
+            double media = soma / notas.length;
+            mensagem += "  Média de " + MATERIAS[i] + ": " + String.format("%.2f", media) + "\n\n";
+            somaTotal += soma;
+            contTotal += notas.length;
+        }
+
+        double mediaGeral = somaTotal / contTotal;
+        mensagem += "Média geral: " + String.format("%.2f", mediaGeral);
+
+        JOptionPane.showMessageDialog(null, mensagem);
     }
 }

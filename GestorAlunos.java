@@ -5,8 +5,8 @@ import javax.swing.JOptionPane;
 public class GestorAlunos {
     static public String[] MATERIAS = {"Matemática","Português","História","Geografia","Inglês","Ciências"};
     public static void main(String[] args) {
-        aluno al = new aluno(null, null, null);
-        String[] opcoes = {"Cadastrar", "Adicionar Notas", "Adicionar competencias", "Visualizar aluno", "Sair"};
+        aluno al = new aluno(null, null);
+        String[] opcoes = {"Cadastrar", "Adicionar Notas", "Adicionar competencias", "Visualizar aluno", "Visualizar vagas disponíveis", "Sair"};
         while (true) {
             String escolha = (String) JOptionPane.showInputDialog(
                 null, "O que deseja fazer?", "Menu",
@@ -23,6 +23,8 @@ public class GestorAlunos {
                 al.adicionarCompetencias();
             } else if (escolha.equals("Visualizar aluno")){
                 al.mostrarNotas();
+            }else if (escolha.equals("Visualizar vagas disponíveis")){
+                al.vagas();
             }
 
         }

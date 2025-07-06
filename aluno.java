@@ -10,7 +10,7 @@ public class aluno {
     protected String[] MATERIAS = {"Matemática","Português","História","Geografia","Inglês","Ciências"};
     protected ArrayList<aluno> alunos = new ArrayList<>();
 
-    public aluno(String nome,  ArrayList<String> competencias, String[] materias) {
+    public aluno(String nome, ArrayList<String> competencias) {
         this.nome = nome;
         this.notas = new double[6][5];
         this.competencias = new ArrayList<>();
@@ -29,7 +29,7 @@ public class aluno {
     public void cadastrar() {
         String nome = JOptionPane.showInputDialog("Nome do aluno:");
         if (nome != null && !nome.trim().isEmpty()) {
-            aluno novo = new aluno(nome, competencias, MATERIAS);
+            aluno novo = new aluno(nome, competencias);
             alunos.add(novo);
             JOptionPane.showMessageDialog(null, "Aluno cadastrado: " + nome);
         }
@@ -155,5 +155,22 @@ public class aluno {
 
         JOptionPane.showMessageDialog(null, mensagem);
         JOptionPane.showMessageDialog(null, "Competencias: \n" + comp);
+    }
+
+    public void vagas(){
+        if (alunos.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Nenhum aluno cadastrado.");
+            return;
+        }
+        aluno selecionado = (aluno) JOptionPane.showInputDialog(
+            null, "Selecione um aluno", "Notas",
+            JOptionPane.PLAIN_MESSAGE, null,
+            alunos.toArray(), alunos.get(0)
+        );
+        if (selecionado == null) return;
+
+        vagas t = new Tecnico(0, selecionado.competencias);
+
+        t.verificar();
     }
 }

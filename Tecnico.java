@@ -22,7 +22,6 @@ public class Tecnico extends vagas{
                     encontrada = true;
                     break;
                 }
-                System.out.print(cn + " - " + comp);
             }
             if (!encontrada) {
                 verificarCompetencias.add(cn);

@@ -8,9 +8,8 @@ public abstract class vagas {
 
     public vagas(int media, ArrayList<String> competencias) {
         this.media = media;
-        this.competencias = new ArrayList<>();
+        this.competencias = competencias;
     }
 
     public abstract void verificar();
-
 }
